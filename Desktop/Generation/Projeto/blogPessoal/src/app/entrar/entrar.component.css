@@ -1,0 +1,9 @@
+#img-bg{
+    background-image: url("https://computerworld.com.br/wp-content/uploads/2020/04/Em-parceria-Fujitsu-usa-algoritmos-para-acelerar-descoberta-de-medicamentos.jpg");
+
+    min-height: 695px;
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
