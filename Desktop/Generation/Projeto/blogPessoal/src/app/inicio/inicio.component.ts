@@ -1,14 +1,13 @@
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { Component, OnInit } from '@angular/core';
+import { AlertasService } from './../service/alertas.service';
+import { AuthService } from './../service/auth.service';
+import { User } from './../model/User';
+import { Tema } from './../model/Tema';
+import { TemaService } from './../service/tema.service';
+import { PostagemService } from './../service/postagem.service';
+import { Postagem } from './../model/Postagem';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment.prod';
-import { Postagem } from '../model/Postagem';
-import { Tema } from '../model/Tema';
-import { User } from '../model/User';
-import { AlertasService } from '../service/alertas.service';
-import { AuthService } from '../service/auth.service';
-import { PostagemService } from '../service/postagem.service';
-import { TemaService } from '../service/tema.service';
+import { environment } from './../../environments/environment.prod';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-inicio',
@@ -19,13 +18,15 @@ export class InicioComponent implements OnInit {
 
   postagem: Postagem = new Postagem()
   listaPostagens: Postagem[]
+  tituloPost: string
 
   tema: Tema = new Tema()
   listaTemas: Tema[]
   idTema: number
+  nomeTema: string
 
   user: User = new User()
-  idUser = environment.id 
+  idUser = environment.id
 
   key = 'data'
   reverse = true
@@ -34,7 +35,7 @@ export class InicioComponent implements OnInit {
     private router: Router,
     private postagemService: PostagemService,
     private temaService: TemaService,
-    private authService: AuthService,
+    public authService: AuthService,
     private alertas: AlertasService
   ) { }
 
@@ -47,6 +48,8 @@ export class InicioComponent implements OnInit {
 
     this.getAllTemas()
     this.getAllPostagens()
+
+    
   }
 
   getAllTemas(){
@@ -56,7 +59,7 @@ export class InicioComponent implements OnInit {
   }
 
   findByIdTema(){
-    this.temaService.getByIdTema(this.idTema).subscribe((resp: Tema) => {
+    this.temaService.getByIdTema(this.idTema).subscribe((resp: Tema) =>{
       this.tema = resp
     })
   }
@@ -87,5 +90,25 @@ export class InicioComponent implements OnInit {
       this.getAllPostagens()
     })
   }
-  
+
+  findByTituloPostagem(){
+    if(this.tituloPost == ''){
+      this.getAllPostagens()
+    } else {
+      this.postagemService.getByTituloPostagem(this.tituloPost).subscribe((resp: Postagem[]) => {
+        this.listaPostagens = resp
+      })
+    }
+  }
+
+  findByNomeTema(){
+    if(this.nomeTema == ''){
+      this.getAllTemas()
+    } else {
+      this.temaService.getByNomeTema(this.nomeTema).subscribe((resp: Tema[]) => {
+        this.listaTemas = resp
+      })
+    }
+  }
+
 }
